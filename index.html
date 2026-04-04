@@ -1,0 +1,113 @@
+# =============================================================
+# A tiny EveryCure-style drug repurposing system
+# =============================================================
+
+drug_diseases = {
+    "Metformin":     ["Type 2 Diabetes"],
+    "Aspirin":       ["Heart Disease", "Inflammation"],
+    "Imatinib":      ["Chronic Myeloid Leukemia"],
+    "Rapamycin":     ["Organ Rejection"],
+    "Dexamethasone": ["Inflammation", "Asthma"],
+    # ---------------------------------------------------------
+    # NEW DRUG: Statins are commonly prescribed to lower
+    # cholesterol. We are adding them to see if the biology
+    # suggests any other uses.
+    # ---------------------------------------------------------
+    "Statin":        ["High Cholesterol"],
+}
+
+drug_targets = {
+    "Metformin":     ["AMPK", "mTOR"],
+    "Aspirin":       ["COX-1", "COX-2"],
+    "Imatinib":      ["BCR-ABL", "PDGFR", "KIT"],
+    "Rapamycin":     ["mTOR"],
+    "Dexamethasone": ["Glucocorticoid Receptor", "NF-kB"],
+    # ---------------------------------------------------------
+    # Statins work by blocking a protein called HMG-CoA
+    # Reductase, which the body uses to make cholesterol.
+    # They also affect NF-kB, which controls inflammation.
+    # ---------------------------------------------------------
+    "Statin":        ["HMG-CoA Reductase", "NF-kB"],
+}
+
+disease_targets = {
+    "Cancer":              ["mTOR", "PDGFR", "KIT", "BCR-ABL"],
+    "Aging":               ["mTOR", "AMPK"],
+    "Neuroinflammation":   ["NF-kB", "COX-2"],
+    "Polycystic Ovary":    ["AMPK"],
+    "Asthma":              ["Glucocorticoid Receptor", "COX-2"],
+    "Heart Disease":       ["COX-1", "COX-2"],
+    "Inflammation":        ["COX-1", "COX-2", "NF-kB", "Glucocorticoid Receptor"],
+    "Type 2 Diabetes":     ["AMPK"],
+    "Organ Rejection":     ["mTOR"],
+    "Chronic Myeloid Leukemia": ["BCR-ABL"],
+    # ---------------------------------------------------------
+    # NEW DISEASE: Alzheimer's is a brain disease. Researchers
+    # have found that inflammation plays a big role in it, so
+    # NF-kB is one of its biological targets.
+    # We also added HMG-CoA Reductase here because some studies
+    # suggest cholesterol metabolism is involved in Alzheimer's.
+    # ---------------------------------------------------------
+    "Alzheimer's Disease": ["NF-kB", "HMG-CoA Reductase"],
+}
+
+
+def find_repurposing_candidates(drug_diseases, drug_targets, disease_targets):
+    candidates = {}
+
+    for drug, targets in drug_targets.items():
+        known_diseases = drug_diseases[drug]
+
+        for disease, d_targets in disease_targets.items():
+            if disease in known_diseases:
+                continue
+
+            shared = [t for t in targets if t in d_targets]
+
+            if shared:
+                candidates[(drug, disease)] = {
+                    "shared_targets": shared,
+                    "score": len(shared)
+                }
+
+    return candidates
+
+
+def build_explanation(drug, new_disease, shared_targets):
+    targets_text = ", ".join(shared_targets)
+    return (
+        f"{drug} may help treat {new_disease} because both are "
+        f"connected through the biological target(s): {targets_text}."
+    )
+
+
+results = find_repurposing_candidates(drug_diseases, drug_targets, disease_targets)
+
+sorted_results = sorted(
+    results.items(),
+    key=lambda item: item[1]["score"],
+    reverse=True
+)
+
+print("=" * 60)
+print("  DRUG REPURPOSING CANDIDATES")
+print("  Ranked from strongest to weakest biological match")
+print("=" * 60)
+
+for (drug, disease), data in sorted_results:
+
+    shared  = data["shared_targets"]
+    score   = data["score"]
+    known   = ", ".join(drug_diseases[drug])
+    targets = ", ".join(shared)
+
+    explanation = build_explanation(drug, disease, shared)
+
+    print()
+    print(f"  Drug                  : {drug}")
+    print(f"  Currently used for    : {known}")
+    print(f"  May be repurposed for : {disease}")
+    print(f"  Shared target(s)      : {targets}")
+    print(f"  Score                 : {score}")
+    print(f"  Explanation           : {explanation}")
+    print("-" * 60)
