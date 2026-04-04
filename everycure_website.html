@@ -1,0 +1,152 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .page { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  .hero { border-bottom: 0.5px solid var(--color-border-tertiary); padding-bottom: 2rem; margin-bottom: 2rem; }
+  .tag { display: inline-block; background: var(--color-background-info); color: var(--color-text-info); font-size: 12px; padding: 3px 10px; border-radius: var(--border-radius-md); margin-bottom: 1rem; }
+  h1 { font-size: 22px; font-weight: 500; color: var(--color-text-primary); line-height: 1.35; margin-bottom: .75rem; }
+  .lead { font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; }
+  .section-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-tertiary); margin-bottom: 1rem; }
+  .section { margin-bottom: 2.5rem; }
+
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2rem; }
+  .stat { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: .875rem 1rem; }
+  .stat-num { font-size: 24px; font-weight: 500; color: var(--color-text-primary); }
+  .stat-label { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+
+  .match-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: .875rem; }
+  .match-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .75rem; }
+  .drug-name { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+  .score-badge { font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: var(--border-radius-md); }
+  .score-2 { background: var(--color-background-success); color: var(--color-text-success); }
+  .score-1 { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .match-row { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; margin-bottom: 5px; }
+  .match-key { color: var(--color-text-tertiary); min-width: 140px; }
+  .match-val { color: var(--color-text-primary); }
+  .target-pill { display: inline-block; background: var(--color-background-warning); color: var(--color-text-warning); font-size: 11px; padding: 2px 8px; border-radius: 20px; margin-right: 4px; margin-top: 2px; }
+  .explanation { margin-top: .75rem; padding: .625rem .875rem; background: var(--color-background-secondary); border-radius: var(--border-radius-md); font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; border-left: 2px solid var(--color-border-secondary); border-radius: 0; }
+
+  .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .how-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+  .how-num { font-size: 20px; font-weight: 500; color: var(--color-text-tertiary); margin-bottom: .5rem; }
+  .how-title { font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin-bottom: .375rem; }
+  .how-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+  .bridge { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 1rem 0; }
+  .bridge-node { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+  .n-drug { background: var(--color-background-info); color: var(--color-text-info); }
+  .n-target { background: var(--color-background-warning); color: var(--color-text-warning); }
+  .n-disease { background: var(--color-background-success); color: var(--color-text-success); }
+  .bridge-arrow { color: var(--color-text-tertiary); font-size: 13px; }
+
+  .note { font-size: 12px; color: var(--color-text-tertiary); margin-top: 2rem; line-height: 1.6; border-top: 0.5px solid var(--color-border-tertiary); padding-top: 1rem; }
+
+  @media (max-width: 500px) {
+    .how-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr 1fr; }
+    .match-key { min-width: 110px; }
+  }
+</style>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="tag">Drug repurposing</div>
+    <h1>A tiny EveryCure-style system</h1>
+    <p class="lead">This system looks at the biology shared between drugs and diseases. When a drug already affects a biological target that a disease also involves, it flags that pair as a candidate worth investigating — even if no one has tried it yet.</p>
+  </div>
+
+  <div class="section">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num">6</div>
+        <div class="stat-label">drugs in the system</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">10</div>
+        <div class="stat-label">diseases tracked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">11</div>
+        <div class="stat-label">biological targets</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">Example output — top matches found</div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <span class="drug-name">Statin</span>
+        <span class="score-badge score-2">Score 2</span>
+      </div>
+      <div class="match-row"><span class="match-key">Currently treats</span><span class="match-val">High Cholesterol</span></div>
+      <div class="match-row"><span class="match-key">May help with</span><span class="match-val">Alzheimer's Disease</span></div>
+      <div class="match-row"><span class="match-key">Shared targets</span><span class="match-val"><span class="target-pill">HMG-CoA Reductase</span><span class="target-pill">NF-kB</span></span></div>
+      <div class="explanation">Statin may help treat Alzheimer's Disease because both are connected through the biological targets: HMG-CoA Reductase, NF-kB.</div>
+    </div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <span class="drug-name">Imatinib</span>
+        <span class="score-badge score-2">Score 3</span>
+      </div>
+      <div class="match-row"><span class="match-key">Currently treats</span><span class="match-val">Chronic Myeloid Leukemia</span></div>
+      <div class="match-row"><span class="match-key">May help with</span><span class="match-val">Cancer</span></div>
+      <div class="match-row"><span class="match-key">Shared targets</span><span class="match-val"><span class="target-pill">BCR-ABL</span><span class="target-pill">PDGFR</span><span class="target-pill">KIT</span></span></div>
+      <div class="explanation">Imatinib may help treat Cancer because both are connected through the biological targets: BCR-ABL, PDGFR, KIT.</div>
+    </div>
+
+    <div class="match-card">
+      <div class="match-header">
+        <span class="drug-name">Metformin</span>
+        <span class="score-badge score-1">Score 1</span>
+      </div>
+      <div class="match-row"><span class="match-key">Currently treats</span><span class="match-val">Type 2 Diabetes</span></div>
+      <div class="match-row"><span class="match-key">May help with</span><span class="match-val">Aging</span></div>
+      <div class="match-row"><span class="match-key">Shared targets</span><span class="match-val"><span class="target-pill">AMPK</span><span class="target-pill">mTOR</span></span></div>
+      <div class="explanation">Metformin may help treat Aging because both are connected through the biological targets: AMPK, mTOR.</div>
+    </div>
+
+  </div>
+
+  <div class="section">
+    <div class="section-label">How the system finds matches</div>
+
+    <div class="bridge">
+      <span class="bridge-node n-drug">Drug</span>
+      <span class="bridge-arrow">— affects —</span>
+      <span class="bridge-node n-target">Biological target</span>
+      <span class="bridge-arrow">— involved in —</span>
+      <span class="bridge-node n-disease">Disease</span>
+    </div>
+
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <div class="how-title">Store known treatments</div>
+        <div class="how-desc">Each drug is linked to the diseases it already treats. This is the starting point — what we already know.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <div class="how-title">Map biological targets</div>
+        <div class="how-desc">Each drug is also linked to the proteins and enzymes it affects inside the body — its biological targets.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <div class="how-title">Link targets to diseases</div>
+        <div class="how-desc">Research tells us which targets are involved in each disease. This data comes from biology and clinical studies.</div>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <div class="how-title">Find the bridge</div>
+        <div class="how-desc">If a drug affects a target that a disease also involves, that shared target is a bridge — and a repurposing candidate.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">This is a simplified educational model. Real drug repurposing systems like EveryCure operate at massive scale, layering in clinical trial data, genomic databases, and machine learning to rank and validate candidates before any human trials begin.</p>
+
+</div>
